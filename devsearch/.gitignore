@@ -1,0 +1,6 @@
+devsearch/__pycache__
+
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
