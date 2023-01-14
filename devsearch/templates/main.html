@@ -19,9 +19,9 @@
 <body>
     {% include 'navbar.html' %}
 
-    <!--DISPLAYING FLASH MESSAGES-->
-    {% if messages %}
-    <ul class="messages">
+    <!--DISPLAYING FLASH MESSAGES--> <!--from  django docs directly-->
+    <!-- {% if messages %} -->
+    <!-- <ul class="messages">
         {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
@@ -29,6 +29,15 @@
         </li>
         {% endfor %}
     </ul>
+    {% endif %} -->
+
+    {% if messages %}
+    {% for message in messages %}
+    <div style="position: fixed; top: 150px; left: 50%; transform: translate(-50%, -50%); z-index: 99999" class="alert alert--{{message.tags}}">
+        <p class="alert__message">{{message}}</p>
+        <button class="alert__close">x</button>
+    </div>
+    {% endfor %}
     {% endif %}
 
     {% block content %}
@@ -37,8 +46,6 @@
     {% endblock content %}
 
 </body>
-<footer>
-    <hr>
-    <h4>footer </h4>
-</footer>
+<script src="{% static 'uikit/app.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </html>

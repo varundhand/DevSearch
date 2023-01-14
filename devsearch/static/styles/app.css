@@ -642,7 +642,7 @@ img {
   width: 100%;
   position: relative;
   z-index: 1;
-  background: transparent;
+  background-image: transparent;
   height: 99vh;
   display: flex;
   justify-content: center;
@@ -659,7 +659,7 @@ img {
   left: 0;
   bottom: 0;
   right: 0;
-  background: url(../images/pattern.jpg);
+  background-image: url(../images/pattern.jpg);
 }
 
 .auth > .card {
