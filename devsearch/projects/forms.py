@@ -14,7 +14,7 @@ class ProjectForm(ModelForm):
     super(ProjectForm,self).__init__(*args,**kwargs)
 
     # self.fields['title'].widget.attrs.update({'class':'input', 'placeholder':'Add Title'}) 
-    # we should for loop through them instead of writing syntax for each of them
+    # we should for-loop through them instead of writing syntax for each of them
     for name,field in self.fields.items():
       field.widget.attrs.update({'class':'input'})
 

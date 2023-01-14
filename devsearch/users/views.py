@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.decorators import login_required #login required decorator 
 from django.contrib import messages #flash messages
-from django.contrib.auth.models import User
+# from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User 
 from .models import *
+from .forms import CustomUserCreationForm
 
 # Create your views here.
 def loginUser(request):
-  page = 'login'
+  page = "login"
   if request.user.is_authenticated: #working as a decorator that prevents logged in user to access the login page
     return redirect('profiles')
 
@@ -28,17 +30,33 @@ def loginUser(request):
     else:
       messages.error(request,'Username/Password incorrect')
 
-  context = {page:'page'}
+  context = {'page':page}
   return render(request, 'users/login_register.html', context)
 
 def logoutUser(request):
   logout(request)
-  messages.error(request,'User was logged out!')
+  messages.info(request,'User was logged out!')
   return redirect('login')
 
 def registerUser(request):
-  page = 'register'
-  context= {page:'page'}
+  page = "register"
+  form = CustomUserCreationForm()
+
+  if request.method == 'POST':
+    form = CustomUserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save(commit=False) #holding a temporary instance of the form and we are doing this so that we can modify it
+      user.username = user.username.lower() #just making sure that the username is lowercase(we dont want them to be case sensative)
+      user.save()
+
+      messages.success(request,'User account was created!')
+
+      login(request, user)
+      return redirect('profiles')
+
+    else:
+      messages.success(request, 'An error has occurred during registration')
+  context= {'page':page, 'form': form }
   return render(request,'users/login_register.html', context)
 
 def profiles(request):

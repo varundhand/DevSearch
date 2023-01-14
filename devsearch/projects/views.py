@@ -5,8 +5,6 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import ProjectForm
 
-
-
 def projects(request):
     projects = Project.objects.all()
 
