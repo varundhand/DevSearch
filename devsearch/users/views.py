@@ -5,7 +5,7 @@ from django.contrib import messages #flash messages
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 from .models import *
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm,ProfileForm
 
 # Create your views here.
 def loginUser(request):
@@ -52,7 +52,7 @@ def registerUser(request):
       messages.success(request,'User account was created!')
 
       login(request, user)
-      return redirect('profiles')
+      return redirect('edit-account')
 
     else:
       messages.success(request, 'An error has occurred during registration')
@@ -74,9 +74,22 @@ def userProfile(request,pk):
 
 @login_required(login_url='login')
 def userAccount(request): #we wont be using a primary key because we can easily iterate the user by 'request.user'
-  profile = request.user.profile
+  profile = request.user.profile #its one to one relationship so it can be used as user.profile
   skills = profile.skill_set.all()  
   projects = profile.project_set.all()
   
   context = {'profile':profile, 'skills':skills,'projects':projects}
   return render(request, 'users/account.html', context)
+
+@login_required(login_url='login')
+def editAccount(request):
+  profile = request.user.profile #the logged in user
+  form = ProfileForm(instance=profile)
+
+  if request.method == 'POST':
+    form = ProfileForm(request.POST, request.FILES, instance=profile) #request.FILES to pass the image of the form
+    if form.is_valid():
+      form.save()
+      return redirect('account')
+  context = {'form':form}
+  return render(request,'users/profile_form.html',context)
