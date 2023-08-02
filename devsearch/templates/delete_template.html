@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% block content %}
+<!-- using a form to accept a post request -->
+<!-- <form action="" method="POST">
+  {% csrf_token %}
+  <p>Are you sure you want to delete "{{object}}"</p>
+  <button><a href="{% url 'projects' %}"> Cancel</a></button>
+  <input type="submit" value="confirm">
+</form> -->
+
+<main class="formPage my-xl">
+  <div class="content-box">
+      <div class="formWrapper">
+
+          <br>
+
+          <form class="form" method="POST" action="">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{object}}"</p>
+            <a class="btn btn--sub btn--lg  my-md"  href="{{request.GET.next}}">Go Back</a>
+              
+              <input class="btn btn--sub btn--lg  my-md" type="submit" value="Confirm" />
+          </form>
+      </div>
+  </div>
+</main>
+
+{% endblock %}
